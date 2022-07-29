@@ -45,44 +45,61 @@ public class ContatoDao {
 
 		try {
 			List<Contato> lstContatos = new ArrayList<Contato>();
-			
+
 			PreparedStatement stmt = connection.prepareStatement(sql);
 
 			ResultSet rs = stmt.executeQuery();
 
 			// itera o resultado da busca
 			while (rs.next()) {
-				
+
 				Contato contato = new Contato();
-				
+
 				contato.setId(rs.getLong("id"));
 				contato.setNome(rs.getString("nome"));
 				contato.setEmail(rs.getString("email"));
 				contato.setEndereco(rs.getString("email"));
-				
+
 				Calendar data = Calendar.getInstance();
 				data.setTime(rs.getDate("dataNascimento"));
 				contato.setDataNascimento(data);
-				
+
 				lstContatos.add(contato);
-				
 
 			}
-			
-			
+
 			rs.close();
 			stmt.close();
 			connection.close();
-			
+
 			return lstContatos;
 
 		} catch (Exception e) {
-			
+
 			throw new RuntimeException();
 
 		}
-		
 
+	}
+	
+	public void altera(Contato contato){
+		String sql = "update contatos set nome=?, email=?, endereco=?, dataNascimento=? where id=?";
+		
+		try {
+			PreparedStatement stmt = connection.prepareStatement(sql);
+			stmt.setString(1, contato.getNome());
+			stmt.setString(2, contato.getEmail());
+			stmt.setString(3, contato.getEndereco());
+			stmt.setDate(4,new Date(contato.getDataNascimento().getTimeInMillis()));
+			stmt.setLong(5, contato.getId());
+			
+			stmt.execute();
+			stmt.close();
+			
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		
 	}
 
 }
