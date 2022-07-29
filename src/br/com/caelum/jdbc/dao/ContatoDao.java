@@ -44,7 +44,7 @@ public class ContatoDao {
 		String sql = "select * from contatos";
 
 		try {
-			List<Contato> lstContatos = new ArrayList<>();
+			List<Contato> lstContatos = new ArrayList<Contato>();
 			
 			PreparedStatement stmt = connection.prepareStatement(sql);
 
